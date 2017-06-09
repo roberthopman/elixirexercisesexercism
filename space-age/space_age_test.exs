@@ -3,7 +3,7 @@ if !System.get_env("EXERCISM_TEST_EXAMPLES") do
 end
 
 ExUnit.start
-ExUnit.configure exclude: :pending, trace: true
+# ExUnit.configure exclude: :pending, trace: true
 
 # You need to define a SpaceAge module containing a function age_on that given a
 # planet (:earth, :saturn, etc) and a number of seconds returns the age in years
@@ -12,7 +12,7 @@ ExUnit.configure exclude: :pending, trace: true
 defmodule SpageAgeTest do
   use ExUnit.Case
 
-  # @tag :pending
+  @tag :pending
   test "age on Earth" do
     input = 1_000_000_000
     assert_in_delta 31.69, SpaceAge.age_on(:earth, input), 0.005
