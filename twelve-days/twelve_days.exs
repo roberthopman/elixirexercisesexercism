@@ -3,8 +3,50 @@ defmodule TwelveDays do
   Given a `number`, return the song's verse for that specific day, including
   all gifts for previous days in the same line.
   """
+
+  @gifts """
+  a Partridge in a Pear Tree.
+  two Turtle Doves, and
+  three French Hens,
+  four Calling Birds,
+  five Gold Rings,
+  six Geese-a-Laying,
+  seven Swans-a-Swimming,
+  eight Maids-a-Milking,
+  nine Ladies Dancing,
+  ten Lords-a-Leaping,
+  eleven Pipers Piping,
+  twelve Drummers Drumming,
+  """|> String.split("\n", trim: true)
+
+  @days ~w(first second third fourth fifth sixth seventh eighth ninth tenth eleventh twelfth)
+
   @spec verse(number :: integer) :: String.t()
   def verse(number) do
+    intro =
+    @days
+    |> Enum.with_index
+    |> Enum.map(fn {day, i} ->
+      if i == (number - 1) do
+        "On the #{day} day of Christmas my true love gave to me, "
+      end
+    end)
+    |> Enum.filter(fn x -> x != nil end)
+
+    all_gifts =
+    @gifts
+    |> Enum.with_index
+    |> Enum.map(fn {verse, i} ->
+      cond do
+        i == 0            -> verse
+        i <= (number - 1) -> verse <> " "
+        true -> nil
+      end
+    end)
+    |> Enum.filter(fn x -> x != nil end)
+    |> Enum.reverse
+
+    Enum.join(intro ++ all_gifts, "")
   end
 
   @doc """
@@ -13,6 +55,17 @@ defmodule TwelveDays do
   """
   @spec verses(starting_verse :: integer, ending_verse :: integer) :: String.t()
   def verses(starting_verse, ending_verse) do
+    s = starting_verse
+    e = ending_verse
+    s..e
+    |> Enum.to_list
+    |> lines
+    |> String.trim
+  end
+
+  def lines([]), do: ""
+  def lines([head|tail]) do
+      verse(head) <> "\n" <> lines(tail)
   end
 
   @doc """
@@ -20,6 +73,6 @@ defmodule TwelveDays do
   """
   @spec sing():: String.t()
   def sing do
+    verses(1,12)
   end
 end
-
