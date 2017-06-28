@@ -22,14 +22,18 @@ defmodule Strain do
   # if keep gets (empty ??) list and any function return the (empty??) list
   # step 5
   # for discard substitute true for false
+  # step 6
+  # implement mutual recursion, (discard becomes inverse of keep)
 
-  def keep([hd|tl], fun) do
-    case fun.(hd) do
-      true -> [hd | keep(tl, fun)]
-      false -> keep(tl, fun)
+  def keep([],_), do: []
+  def keep([head|tail], fun) do
+    if fun.(head) do
+      [head | keep(tail, fun)]
+    else
+      keep(tail, fun)
     end
   end
-  def keep([],_), do: []
+
   @doc """
   Given a `list` of items and a function `fun`, return the list of items where
   `fun` returns false.
@@ -37,11 +41,7 @@ defmodule Strain do
   Do not use `Enum.reject`.
   """
   @spec discard(list :: list(any), fun :: ((any) -> boolean)) :: list(any)
-  def discard([],_), do: []
-  def discard([hd|tl], fun) do
-    case fun.(hd) do
-      false -> [hd | discard(tl, fun)]
-      true -> discard(tl, fun)
-    end
+  def discard(list, fun) do
+    keep(list, fn(x) -> !fun.(x) end)
   end
 end
