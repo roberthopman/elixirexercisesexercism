@@ -7,7 +7,7 @@ defmodule Acronym do
   def abbreviate(string) do
     string
     |> String.replace("-", " ")
-    |> String.replace("T", " T")
+    |> String.replace(~r/[A-Z]/, " \\0")
     |> String.split(" ")
     |> Enum.map(fn(word) -> String.first(word) end)
     |> Enum.join("")
@@ -16,4 +16,4 @@ defmodule Acronym do
 end
 
 # 1 pick most difficult test
-# 2 split, map, join, replace, upcase, then fix the replace "T"
+# 2 split, map, join, replace, upcase, then replace the T (line 10)

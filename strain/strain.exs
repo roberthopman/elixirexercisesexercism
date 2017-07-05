@@ -24,13 +24,27 @@ defmodule Strain do
   # for discard substitute true for false
   # step 6
   # implement mutual recursion, (discard becomes inverse of keep)
+  # step 7
+  # implement tail recursion optimization
+  # add an accumulator to the definition
 
-  def keep([],_), do: []
-  def keep([head|tail], fun) do
+  # example by NobbZ
+  # normal recursion
+  # def length_rec([]), do: []
+  # def length_rec([_|tail]), do: 1 + length_rec(tail)
+
+  # tail optimized recursion
+  # def length_tail_rec(list), do: length_tail_rec(list, 0)
+  # defp length_tail_rec([], acc), do: acc
+  # defp length_tail_rec([_|tail], acc), do: length_tail_rec(tail, acc + 1)
+
+  def keep(list, fun), do: keep(list, fun, [])
+  defp keep([], _, acc), do: Enum.reverse(acc)
+  defp keep([head | tail], fun, acc) do
     if fun.(head) do
-      [head | keep(tail, fun)]
+      keep(tail, fun, [head | acc])
     else
-      keep(tail, fun)
+      keep(tail, fun, acc)
     end
   end
 
