@@ -5,7 +5,6 @@ defmodule Scrabble do
   @spec score(String.t) :: non_neg_integer
   def score(word) do
     cond do
-
       String.length(word) == 0 -> 0
       String.first(word) == " " -> 0
       true -> word
