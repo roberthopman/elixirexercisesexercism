@@ -6,14 +6,13 @@ defmodule Strain do
   Do not use `Enum.filter`.
   """
   @spec keep(list :: list(any), fun :: ((any) -> boolean)) :: list(any)
-  def keep(list, fun), do: keep(list, fun, [])
-  defp keep([], _, acc), do: Enum.reverse(acc)
-  defp keep([head | tail], fun, acc) do
-    if fun.(head) do
-      keep(tail, fun, [head | acc])
-    else
-      keep(tail, fun, acc)
-    end
+
+  def keep([], _), do: []
+  def keep([head|tail], fun) do
+    Enum.reverse(
+      Enum.reduce([head|tail], [], fn(head, acc) ->
+          if fun.(head), do: [head | acc], else: acc
+        end))
   end
 
   @doc """
@@ -48,6 +47,8 @@ end
   # step 7
   # implement tail recursion optimization
   # add an accumulator to the definition
+  # step 8
+  # add reduce
 
   # example by NobbZ
   # normal recursion

@@ -14,5 +14,6 @@ defmodule Pangram do
 
   @spec pangram?(String.t) :: boolean
   def pangram?(sentence) do
+    Enum.empty?(Enum.to_list(?a..?z) -- to_char_list(String.downcase(sentence)))
   end
 end
